@@ -15,26 +15,26 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
     include: {
       author: {
         select: { name: true, email: true },
-      }
-    }
+      },
+    },
   });
   return {
     props: post,
-  }
+  };
 };
 
 async function publishPost(id: number): Promise<void> {
-  await fetch(`http://localhost:3000/api/publish/${id}`, {
-    method: 'PUT'
+  await fetch(`${process.env.APP_URL}/api/publish/${id}`, {
+    method: "PUT",
   });
-  await Router.push('/');
+  await Router.push("/");
 }
 
 async function deletePost(id: number): Promise<void> {
-  await fetch(`http://localhost:3000/api/post/${id}`, {
-    method: 'DELETE'
+  await fetch(`${process.env.APP_URL}/api/post/${id}`, {
+    method: "DELETE",
   });
-  Router.push('/');
+  Router.push("/");
 }
 
 const Post: React.FC<PostProps> = (props) => {
@@ -44,10 +44,10 @@ const Post: React.FC<PostProps> = (props) => {
   }
   const userHasValidSession = Boolean(session);
   const postBelongsToUser = session?.user?.email === props.author?.email;
- 
-  let title = props.title
+
+  let title = props.title;
   if (!props.published) {
-    title = `${title} (Draft)`
+    title = `${title} (Draft)`;
   }
 
   return (
@@ -62,8 +62,7 @@ const Post: React.FC<PostProps> = (props) => {
 
         {userHasValidSession && postBelongsToUser && (
           <button onClick={() => deletePost(props.id)}>Delete</button>
-        )}  
-
+        )}
       </div>
       <style jsx>{`
         .page {
@@ -87,7 +86,7 @@ const Post: React.FC<PostProps> = (props) => {
         }
       `}</style>
     </Layout>
-  )
-}
+  );
+};
 
-export default Post
+export default Post;
