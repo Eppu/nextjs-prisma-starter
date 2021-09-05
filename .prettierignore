@@ -1,0 +1,11 @@
+node_modules
+# Keep environment variables out of prettier
+.env
+
+# Next.js build output
+.next
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
