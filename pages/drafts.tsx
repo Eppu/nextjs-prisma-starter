@@ -46,16 +46,19 @@ const Drafts: React.FC<Props> = (props) => {
         );
     }
 
+    const hasPosts: Boolean = props.drafts.length > 0;
+
     return (
         <Layout>
             <div className="page">
                 <h1>My drafts</h1>
                 <main>
-                    {props.drafts.map((post) => (
+                    {hasPosts ? props.drafts.map((post) => (
                         <div key={post.id} className="post">
                             <Post post={post} />
                         </div>
-                    ))}
+                    )) : <p>You don&apos;t currently have any drafts.</p>}
+                    
                 </main>
             </div>
             <style jsx>{`
