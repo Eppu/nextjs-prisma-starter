@@ -1,24 +1,24 @@
-import React from "react"
-import { GetStaticProps } from "next"
-import Layout from "../components/Layout"
-import Post, { PostProps } from "../components/Post"
-import prisma from '../lib/prisma';
+import React from "react";
+import { GetStaticProps } from "next";
+import Layout from "../components/Layout";
+import Post, { PostProps } from "../components/Post";
+import prisma from "../lib/prisma";
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.post.findMany({
-      where: { published: true },
-      include: {
-        author: {
-          select: { name: true },
-        }
-      }
+    where: { published: true },
+    include: {
+      author: {
+        select: { name: true },
+      },
+    },
   });
-  return { props: { feed } }
-}
+  return { props: { feed } };
+};
 
 type Props = {
-  feed: PostProps[]
-}
+  feed: PostProps[];
+};
 
 const Blog: React.FC<Props> = (props) => {
   return (
@@ -26,12 +26,16 @@ const Blog: React.FC<Props> = (props) => {
       <div className="page">
         <h1>Feed</h1>
         <main>
-          {props.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
-              {console.log(post)}
-            </div>
-          ))}
+          {props.feed.length > 0 ? (
+            props.feed.map((post) => (
+              <div key={post.id} className="post">
+                <Post post={post} />
+                {console.log(post)}
+              </div>
+            ))
+          ) : (
+            <p>No posts available.</p>
+          )}
         </main>
       </div>
       <style jsx>{`
@@ -49,7 +53,7 @@ const Blog: React.FC<Props> = (props) => {
         }
       `}</style>
     </Layout>
-  )
-}
+  );
+};
 
-export default Blog
+export default Blog;
