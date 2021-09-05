@@ -4,7 +4,7 @@ import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import prisma from "../lib/prisma";
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.post.findMany({
     where: { published: true },
     include: {
@@ -13,7 +13,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
       },
     },
   });
-  return { props: { feed } };
+  return { props: { feed }, revalidate: 10 };
 };
 
 type Props = {
